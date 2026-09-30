@@ -32,7 +32,7 @@ jobs:
         uses: hashicorp/setup-terraform@v4
 
       - name: configure aws credentials
-        uses: aws-actions/configure-aws-credentials@6
+        uses: aws-actions/configure-aws-credentials@v6
         with:
           ole-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ secrets.AWS_OIDC_ROLE }}
           aws-region: eu-central-1
