@@ -1,0 +1,28 @@
+name: resume challenge frontend
+
+on:
+  push:
+    branches: [main, dev]
+
+permissions: 
+  id-token: write
+  contents: read
+
+jobs:
+
+  Terraform:
+    runs-on: ubuntu-latest
+
+    steps: 
+      - name: git clone the repository 
+        uses: actions/checkout@v6
+       
+
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ secrets.AWS_OIDC_ROLE }}
+          aws-region: eu-central-1
+      
+      - name: s3 sync
+        run: aws s3 sync files s3://${{ vars.BUCKET_MAIN }} --delete
