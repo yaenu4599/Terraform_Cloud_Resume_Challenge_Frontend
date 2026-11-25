@@ -26,3 +26,11 @@ jobs:
       
       - name: s3 sync
         run: aws s3 sync files s3://${{ vars.BUCKET_MAIN }} --delete
+
+      - name: Invalidate CloudFront
+        run: |
+          DIST_ID=$(aws ssm get-parameter \
+            --name "/resume/cloudfront_id" \
+            --query "Parameter.Value" \
+            --output text)
+          aws cloudfront create-invalidation --distribution-id "$DIST_ID" --paths "/*"
